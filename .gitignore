@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+
+# Build output
+.next/
+
+# Build artifacts
+out/
+
+# Temporary files
+.cache/
+
+# Logs
+logs/*.log
+
+# Debugging files
+npm-debug.log*
+yarn-error.log
+
+# IDE related files
+.vscode/
+.idea/
+
+# Environment specific files
+.env.local
+.env.development
+.env.production
+
+# Editor temp files
+*.swp
+
+# Compiled CSS (if using CSS-in-JS)
+.next/server/pages/**/*.css
+
+# Coverage directory
+coverage/
+
+# Other ignore patterns specific to your project
+
+# Ignore any additional directories as needed
+# For example, custom middleware folder:
+middleware/
