@@ -91,11 +91,8 @@ export default function Home(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  let answer = " ";
-
   const getFactor = () => {
-    const number = Math.floor(factorInput / 2);
-    const primes = findPrimes(number);
+    const primes = findPrimes(Math.floor(factorInput / 2));
     let ouputCreate = "";
     const factors = findPrimeFactors(factorInput, primes);
     for (let i = 0; i < factors[0].length; i++) {
@@ -158,6 +155,10 @@ export default function Home(props) {
     return [primeFactors, divideResult];
   }
 
+  const handleChange = (event) => {
+    const newValue = event.target.value.slice(0, 8);
+    event.target.value = newValue;
+  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between pt-24 bg-slate-100">
       <Box sx={{ display: "flex" }}>
@@ -223,7 +224,7 @@ export default function Home(props) {
             {drawer}
           </Drawer>
         </Box>
-        <Box
+        {calStatus == "factor" ? <Box
           component="main"
           sx={{
             flexGrow: 1,
@@ -274,7 +275,59 @@ export default function Home(props) {
               }}
             />
           </Box>
-        </Box>
+        </Box> : (calStatus == "HCF" ? <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 2,
+            m: 2,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            borderRadius: 3,
+          }}
+          bgcolor={"white"}
+        >
+          <Box
+            id="factor"
+            sx={{
+              width: "100%",
+            }}
+          >
+            <TextField
+              id="outlined-number"
+              label="Enter Number"
+              type="number"
+              display="block"
+              inputProps={{ maxLength: 8, onChange: handleChange }}
+              onChange={(e) => setFactorInput(e.target.value)}
+              sx={{
+                width: 250,
+                mx: 2,
+                my: 2,
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{ width: 250, mx: 2, my: 2 }}
+              onClick={() => getFactor()}
+            >
+              Calculate
+            </Button>
+            <TextField
+              id="outlined-multiline-static"
+              label="Factors"
+              disabled={true}
+              multiline
+              rows={rowOutput}
+              value={factorOutput}
+              display="block"
+              sx={{
+                width: 250,
+                mx: 2,
+                my: 2,
+              }}
+            />
+          </Box>
+        </Box> : "")}
       </Box>
     </main>
   );
