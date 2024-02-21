@@ -190,6 +190,11 @@ export default function HCF() {
           m: 2,
         }}
       >
+        <h2 className="text-center font-heading m-10 text-4xl sm:text-6xl lg:text-8xl leading-[5rem] sm:leading-[7rem] lg:leading-[7rem] font-black	 ">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+            LCM
+          </span>
+        </h2>
         <FormControl sx={{ m: 1, width: "100%" }}>
           <InputLabel id="Number-of-textfields">Enter number</InputLabel>
           <Select

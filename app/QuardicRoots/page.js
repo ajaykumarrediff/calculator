@@ -14,41 +14,48 @@ import { useTheme } from "@mui/material/styles";
 const drawerWidth = 240;
 
 export default function factor(props) {
-  const [powerOutput, setPowerOutput] = React.useState("");
+  const [rootOutput, setRootOutput] = React.useState("");
   const [rowOutput, setRowOutput] = React.useState(4);
-  const [powerValue, setPowerValue] = React.useState();
-  const [numberI, setNumberI] = React.useState("");
-  const [powerIValue, setPowerIValue] = React.useState("");
+  const [rootStatus, setRootStatus] = React.useState();
+  const [valueA, setValueA] = React.useState("");
+  const [valueB, setValueB] = React.useState("");
+  const [valueC, setValueC] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const getPower = () => {
-    if (numberI !== "" && powerIValue !== "") {
-      let power = 1;
-      let charout = "";
-      for (let i = 1; i <= powerIValue; i++) {
-        power = power * numberI;
-        let nstring = "";
-        for (let j = 1; j <= i; j++) {
-          nstring =
-            numberI + (j === 1 ? "" : String.fromCharCode(0xd7)) + nstring;
-        }
-        charout = charout + nstring + " = " + power + "\n";
-        setRowOutput(i + 1);
+    if (valueA !== "" && valueB !== "" && valueC !== "") {
+      let a = valueA;
+      let b = valueB;
+      let c = valueC;
+      let equStatus = b * b - 4 * a * c;
+      if (equStatus === 0) {
+        let root = -(b / (2 * a));
+        setRootStatus("Equal Real Roots");
+        setRootOutput(root);
+      } else if (equStatus >= 0) {
+        let root1 = (-b + Math.sqrt(equStatus)) / (2 * a);
+        let root2 = (-b - Math.sqrt(equStatus)) / (2 * a);
+        setRootStatus("Different Real Roots");
+        setRootOutput(root1 + " & " + root2);
+      } else if (equStatus <= 0) {
+        setRootStatus("No real root available");
+        setRootOutput("N/A");
       }
-      setPowerValue(power);
-      setPowerOutput(charout);
     } else {
       setOpen(true);
     }
   };
 
-  const handleChangeNumber = (e) => {
-    setNumberI(e);
+  const handleChangeA = (e) => {
+    setValueA(e);
   };
-  const handleChangePower = (e) => {
-    setPowerIValue(e);
+  const handleChangeB = (e) => {
+    setValueB(e);
+  };
+  const handleChangeC = (e) => {
+    setValueC(e);
   };
 
   const handleClose = () => {
@@ -78,7 +85,7 @@ export default function factor(props) {
       >
         <h2 className="text-center font-heading m-10 text-4xl sm:text-6xl lg:text-8xl leading-[5rem] sm:leading-[7rem] lg:leading-[7rem] font-black	 ">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-            Power
+            Roots of Quardic Equation
           </span>
         </h2>
         <Box
@@ -92,22 +99,40 @@ export default function factor(props) {
         >
           <TextField
             id="outlined-number-1"
-            label="Number"
+            label="Coefficient of x²"
             type="number"
-            sx={{ width: { md: "49%", xs: "100%" }, mr: { md: 1, lg: 2 } }}
-            onChange={(e) => handleChangeNumber(e.target.value)}
-            value={numberI}
+            placeholder="value of a"
+            sx={{ width: { md: "32.2%", xs: "100%" }, mr: { md: 1, lg: 1.8 } }}
+            onChange={(e) => handleChangeA(e.target.value)}
+            value={valueA}
             InputLabelProps={{
               shrink: true,
             }}
           />
           <TextField
             id="outlined-number-2"
-            label="Power"
+            label="Coefficient of x"
             type="number"
-            sx={{ width: { md: "49%", xs: "100%" }, mt: { md: 0, xs: 2 } }}
-            onChange={(e) => handleChangePower(e.target.value)}
-            value={powerIValue}
+            placeholder="value of b"
+            sx={{
+              width: { md: "32.2%", xs: "100%" },
+              mt: { md: 0, xs: 2 },
+              mr: { md: 1, lg: 1.8 },
+            }}
+            onChange={(e) => handleChangeB(e.target.value)}
+            value={valueB}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            id="outlined-number-3"
+            label="Constant"
+            type="number"
+            placeholder="value of c"
+            sx={{ width: { md: "32.2%", xs: "100%" }, mt: { md: 0, xs: 2 } }}
+            onChange={(e) => handleChangeC(e.target.value)}
+            value={valueC}
             InputLabelProps={{
               shrink: true,
             }}
@@ -128,16 +153,17 @@ export default function factor(props) {
           sx={{ ml: 0 }}
         >
           <text x="50" y="70" fontSize="50">
-            {powerValue}
+            {rootOutput}
           </text>
         </svg>
         <TextField
           id="outlined-multiline-static"
-          label="Power Calculation"
+          label=""
+          variant="outlined"
           disabled={true}
           multiline
           rows={rowOutput}
-          value={powerOutput}
+          value={rootStatus}
           sx={{
             width: "100%",
             m: 2,
@@ -155,7 +181,7 @@ export default function factor(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please enter valid number and power to evalute Value of Power.
+            Please enter valid values of a, b and c to evalute Value of Roots.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -50,51 +50,54 @@ export default function RootLayout({ children }) {
     setCalStatus(DrawerCalculator);
   };
 
-  // Remove this const when copying and pasting into your project.
+  const handleCloseMobile = () => {
+    if (!isClosing) {
+      setMobileOpen(!mobileOpen);
+    }
+  };
+
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
+    <>
       <List>
-        <Link href="/factors">
+        <Link onClick={() => handleCloseMobile()} href="/factors">
           <ListItem key={"Factors"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Factors"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="/HCF">
+        <Link onClick={() => handleCloseMobile()} href="/HCF">
           <ListItem key={"HCF"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"HCF"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="LCM">
+        <Link onClick={() => handleCloseMobile()} href="LCM">
           <ListItem key={"LCM"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"LCM"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="Power">
+        <Link onClick={() => handleCloseMobile()} href="Power">
           <ListItem key={"Power"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Power"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="SQRT">
+        <Link onClick={() => handleCloseMobile()} href="SQRT">
           <ListItem key={"Square Root"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Square Root"} />
             </ListItemButton>
           </ListItem>
         </Link>
-        <Link href="QuardicRoots">
+        <Link onClick={() => handleCloseMobile()} href="QuardicRoots">
           <ListItem key={"Roots of quardic equation"} disablePadding>
             <ListItemButton>
               <ListItemText primary={"Roots of quardic equation"} />
@@ -102,20 +105,17 @@ export default function RootLayout({ children }) {
           </ListItem>
         </Link>
       </List>
-    </div>
+    </>
   );
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="bg-zinc-400">
+        <div className="bg-zinc-400 mb-20">
           <Box sx={{ display: "flex" }}>
             <CssBaseline />
             <AppBar
               position="fixed"
-              sx={{
-                width: { sm: `calc(100% - ${drawerWidth}px)` },
-                ml: { sm: `${drawerWidth}px` },
-              }}
+              sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             >
               <Toolbar>
                 <IconButton
@@ -145,7 +145,7 @@ export default function RootLayout({ children }) {
                 onTransitionEnd={handleDrawerTransitionEnd}
                 onClose={handleDrawerClose}
                 ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
+                  keepMounted: true,
                 }}
                 sx={{
                   display: { xs: "block", sm: "none" },
@@ -155,6 +155,7 @@ export default function RootLayout({ children }) {
                   },
                 }}
               >
+                <Toolbar />
                 {drawer}
               </Drawer>
               <Drawer
@@ -164,12 +165,24 @@ export default function RootLayout({ children }) {
                   "& .MuiDrawer-paper": {
                     boxSizing: "border-box",
                     width: drawerWidth,
+                    height: `calc(100vh - 52px)`
                   },
                 }}
                 open
               >
+                <Toolbar />
                 {drawer}
               </Drawer>
+              <footer className="bg-gray-800 text-white py-4 text-center fixed left-0 w-full bottom-0 z-50">
+                <div className="container mx-auto px-4 text-sm">
+                  <p>
+                    Copyright © 2024{" "}
+                    <a href="https://chandoraajay.tech" target="blank">
+                      ChandoraAjay.tech
+                    </a>
+                  </p>
+                </div>
+              </footer>
             </Box>
             <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
           </Box>
